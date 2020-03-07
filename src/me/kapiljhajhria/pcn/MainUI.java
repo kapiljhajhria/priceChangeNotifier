@@ -48,6 +48,16 @@ public class MainUI extends javax.swing.JFrame {
         menuBar.add(menuAbout);
 
         menuExit.setText("Exit");
+        menuExit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuExitMouseClicked(evt);
+            }
+        });
+        menuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuExitActionPerformed(evt);
+            }
+        });
         menuBar.add(menuExit);
 
         setJMenuBar(menuBar);
@@ -70,6 +80,14 @@ public class MainUI extends javax.swing.JFrame {
     private void menuAboutDeveloperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutDeveloperActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuAboutDeveloperActionPerformed
+
+    private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
+    // TODO add your handling code here:
+    }//GEN-LAST:event_menuExitActionPerformed
+
+    private void menuExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuExitMouseClicked
+        this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_menuExitMouseClicked
 
     /**
      * @param args the command line arguments
