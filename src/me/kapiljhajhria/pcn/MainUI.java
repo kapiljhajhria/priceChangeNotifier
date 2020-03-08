@@ -102,6 +102,9 @@ public class MainUI extends javax.swing.JFrame {
                 if (priceElement == null) {
                     priceElement = document.getElementById("priceblock_ourprice");
                 }
+                if (priceElement == null) {
+                    priceElement = document.getElementById("priceblock_saleprice");
+                }
 
 //                System.out.println(priceElement);
 //                System.out.println("the end");
@@ -121,7 +124,7 @@ public class MainUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(MainUI.this, "Price changed from: " + this.productOldPrice + " to " + this.productLatestPrice, "Price Changed", HEIGHT);
                 }
             } catch (Exception ex) {
-//                ex.printStackTrace();//
+                ex.printStackTrace();//
                 JOptionPane.showMessageDialog(null, "Error Fetching product Data", "Fetch Error", HEIGHT);
 //                return "Error";
             }
