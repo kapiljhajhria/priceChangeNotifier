@@ -5,17 +5,74 @@
  */
 package me.kapiljhajhria.pcn;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 /**
  *
  * @author kp
  */
 public class MainUI extends javax.swing.JFrame {
 
+    AmazonProduct product = new AmazonProduct();
+    
     /**
      * Creates new form MainUI
      */
     public MainUI() {
         initComponents();
+        System.out.println("hello there");
+//        AmazonProduct product = new AmazonProduct("https://www.amazon.in/gp/product/B077V12H3Q/ref=ppx_yo_dt_b_asin_image_o00_s00?ie=UTF8&psc=1");
+//        System.out.println(product.url);
+//        product.fetchProductData();
+//        Document page = Jsoup.connect("https://scrapethissite.com/pages/simple/").userAgent("http://scrapingauthority.com").get();
+//       Document page = Jsoup.connect("https://scrapethissite.com/pages/simple/")
+//.userAgent("http://scrapingauthority.com")
+//.get();
+    }
+
+    public class AmazonProduct {
+
+        String url;
+        String productPrice="";
+        String productName="";
+        /**
+         *
+         * @param productUrl
+         */
+        public AmazonProduct() {
+            
+        }
+
+        void fetchProductData() {
+            try {
+                System.out.println("will scrap data for url: "+this.url);
+                //---get whole html document
+                Document document = Jsoup.connect(this.url).userAgent("Chrome").get();
+//                System.out.println(document.outerHtml());
+
+                //-----get product price
+                Element priceElement = document.getElementById("priceblock_dealprice");
+                if(priceElement==null)
+                    priceElement=document.getElementById("priceblock_ourprice");
+                
+//                System.out.println(priceElement);
+//                System.out.println("the end");
+                this.productPrice= priceElement.wholeText();
+                
+                //---get product name
+                
+                Element productNameElement = document.getElementById("productTitle");
+                this.productName=productNameElement.wholeText().strip();
+                
+                
+                System.out.println("product Name is : "+this.productName+"  productPrice: "+this.productPrice);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
     }
 
     /**
@@ -27,6 +84,15 @@ public class MainUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblAmazonProductUrl = new javax.swing.JLabel();
+        txtBoxAmazonProductUrl = new javax.swing.JTextField();
+        btnFetchProductDetails = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        lblProductName = new javax.swing.JLabel();
+        lblProductPrice = new javax.swing.JLabel();
+        lblFetchedDetailsTitle = new javax.swing.JLabel();
+        lblFetchedProductName = new javax.swing.JLabel();
+        lblFetchedProductPrice = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         menuAbout = new javax.swing.JMenu();
         menuAboutDeveloper = new javax.swing.JMenuItem();
@@ -34,6 +100,32 @@ public class MainUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Amazon Price Change Notifier");
+        setResizable(false);
+
+        lblAmazonProductUrl.setText("Amazon Product URL");
+
+        txtBoxAmazonProductUrl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBoxAmazonProductUrlActionPerformed(evt);
+            }
+        });
+
+        btnFetchProductDetails.setText("Go");
+        btnFetchProductDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFetchProductDetailsActionPerformed(evt);
+            }
+        });
+
+        lblProductName.setText("Name");
+
+        lblProductPrice.setText("Price");
+
+        lblFetchedDetailsTitle.setText("Fetched Details");
+
+        lblFetchedProductName.setText("Product Name");
+
+        lblFetchedProductPrice.setText("Product Price");
 
         menuAbout.setText("About");
 
@@ -66,11 +158,54 @@ public class MainUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtBoxAmazonProductUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnFetchProductDetails, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAmazonProductUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(lblProductPrice, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblProductName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblFetchedProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblFetchedProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(248, 248, 248)
+                .addComponent(lblFetchedDetailsTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 618, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(lblAmazonProductUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBoxAmazonProductUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFetchProductDetails))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblFetchedDetailsTitle)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProductName)
+                    .addComponent(lblFetchedProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProductPrice)
+                    .addComponent(lblFetchedProductPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(408, 408, 408))
         );
 
         pack();
@@ -82,12 +217,27 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_menuAboutDeveloperActionPerformed
 
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
-    // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_menuExitActionPerformed
 
     private void menuExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuExitMouseClicked
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_menuExitMouseClicked
+
+    private void txtBoxAmazonProductUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBoxAmazonProductUrlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBoxAmazonProductUrlActionPerformed
+
+    private void btnFetchProductDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFetchProductDetailsActionPerformed
+        // TODO add your handling code here:
+        product.url=txtBoxAmazonProductUrl.getText();
+         
+        System.out.println("product url is"+product.url);
+        product.fetchProductData();
+        
+        lblFetchedProductName.setText(product.productName);
+        lblFetchedProductPrice.setText(product.productPrice);
+    }//GEN-LAST:event_btnFetchProductDetailsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -120,14 +270,24 @@ public class MainUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainUI().setVisible(true);
+                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFetchProductDetails;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblAmazonProductUrl;
+    private javax.swing.JLabel lblFetchedDetailsTitle;
+    private javax.swing.JLabel lblFetchedProductName;
+    private javax.swing.JLabel lblFetchedProductPrice;
+    private javax.swing.JLabel lblProductName;
+    private javax.swing.JLabel lblProductPrice;
     private javax.swing.JMenu menuAbout;
     private javax.swing.JMenuItem menuAboutDeveloper;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuExit;
+    private javax.swing.JTextField txtBoxAmazonProductUrl;
     // End of variables declaration//GEN-END:variables
 }
