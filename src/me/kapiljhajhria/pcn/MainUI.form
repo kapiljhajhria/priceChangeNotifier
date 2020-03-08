@@ -41,6 +41,10 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosed"/>
+    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -59,10 +63,10 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="txtBoxAmazonProductUrl" min="-2" pref="537" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="btnFetchProductDetails" pref="59" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="txtBoxAmazonProductUrl" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnFetchProductDetails" min="-2" pref="85" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -74,18 +78,22 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
+                                  <Component id="lblFetchedProductName" min="-2" pref="545" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
                                       <Component id="lblFetchedProductPrice" min="-2" pref="96" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="lblDateTimeOfFetchedPrice" min="-2" pref="133" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnPriceNotification" min="-2" pref="242" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                                      <Component id="lblStopScheduledTask" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="lblFetchedProductName" min="-2" pref="545" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="16" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -117,14 +125,26 @@
                   <Component id="lblProductName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblFetchedProductName" alignment="3" pref="37" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblProductPrice" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblFetchedProductPrice" alignment="3" max="32767" attributes="0"/>
-                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblDateTimeOfFetchedPrice" alignment="3" min="-2" pref="13" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblProductPrice" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblFetchedProductPrice" alignment="3" max="32767" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblDateTimeOfFetchedPrice" alignment="3" min="-2" pref="13" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="185" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnPriceNotification" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblStopScheduledTask" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="408" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -181,6 +201,22 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblDateTimeOfFetchedPrice">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnPriceNotification">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Get Notified On Price Change"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPriceNotificationActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="lblStopScheduledTask">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Stop Task"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lblStopScheduledTaskActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
