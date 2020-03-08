@@ -5,6 +5,8 @@
  */
 package me.kapiljhajhria.pcn;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -37,6 +39,7 @@ public class MainUI extends javax.swing.JFrame {
         String url;
         String productPrice="";
         String productName="";
+        String dateTimeOfFetchedPrice;
         /**
          *
          * @param productUrl
@@ -68,6 +71,7 @@ public class MainUI extends javax.swing.JFrame {
                 
                 
                 System.out.println("product Name is : "+this.productName+"  productPrice: "+this.productPrice);
+                this.dateTimeOfFetchedPrice=DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()).trim();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -93,6 +97,8 @@ public class MainUI extends javax.swing.JFrame {
         lblFetchedDetailsTitle = new javax.swing.JLabel();
         lblFetchedProductName = new javax.swing.JLabel();
         lblFetchedProductPrice = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblDateTimeOfFetchedPrice = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         menuAbout = new javax.swing.JMenu();
         menuAboutDeveloper = new javax.swing.JMenuItem();
@@ -126,6 +132,8 @@ public class MainUI extends javax.swing.JFrame {
         lblFetchedProductName.setText("Product Name");
 
         lblFetchedProductPrice.setText("Product Price");
+
+        jLabel1.setText("on");
 
         menuAbout.setText("About");
 
@@ -174,7 +182,12 @@ public class MainUI extends javax.swing.JFrame {
                                     .addComponent(lblProductName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblFetchedProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblFetchedProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblDateTimeOfFetchedPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(lblFetchedProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -204,7 +217,9 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProductPrice)
-                    .addComponent(lblFetchedProductPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblFetchedProductPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(lblDateTimeOfFetchedPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(408, 408, 408))
         );
 
@@ -237,6 +252,7 @@ public class MainUI extends javax.swing.JFrame {
         
         lblFetchedProductName.setText(product.productName);
         lblFetchedProductPrice.setText(product.productPrice);
+        lblDateTimeOfFetchedPrice.setText(product.dateTimeOfFetchedPrice);
     }//GEN-LAST:event_btnFetchProductDetailsActionPerformed
 
     /**
@@ -277,8 +293,10 @@ public class MainUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFetchProductDetails;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblAmazonProductUrl;
+    private javax.swing.JLabel lblDateTimeOfFetchedPrice;
     private javax.swing.JLabel lblFetchedDetailsTitle;
     private javax.swing.JLabel lblFetchedProductName;
     private javax.swing.JLabel lblFetchedProductPrice;
