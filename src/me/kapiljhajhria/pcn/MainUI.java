@@ -12,6 +12,7 @@ import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import javax.management.Notification;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JOptionPane;
@@ -22,11 +23,12 @@ import org.jsoup.nodes.Element;
 
 /**
  *
- * @author kp
+ * @author kapil jhajhria
  */
 public class MainUI extends javax.swing.JFrame {
 
     AmazonProduct product = new AmazonProduct();
+    Notifications notification = new Notifications();
     int scheduledTime = 300000; // 5 min
     Timer timer = new Timer(scheduledTime, new ActionListener() {//60000 event will occur every minute
 
@@ -47,18 +49,11 @@ public class MainUI extends javax.swing.JFrame {
     public MainUI() {
         initComponents();
         System.out.println("hello there");
-//        AmazonProduct product = new AmazonProduct("https://www.amazon.in/gp/product/B077V12H3Q/ref=ppx_yo_dt_b_asin_image_o00_s00?ie=UTF8&psc=1");
-//        System.out.println(product.url);
-//        product.fetchProductData();
-//        Document page = Jsoup.connect("https://scrapethissite.com/pages/simple/").userAgent("http://scrapingauthority.com").get();
-//       Document page = Jsoup.connect("https://scrapethissite.com/pages/simple/")
-//.userAgent("http://scrapingauthority.com")
-//.get();
     }
 
     public class AmazonProduct {
 
-        String url;
+        String productUrl;
         String productLatestPrice = "";
         String productName = "";
         String dateTimeOfFetchedPrice;
@@ -69,45 +64,37 @@ public class MainUI extends javax.swing.JFrame {
          * @param filename
          * @param productUrl
          */
-        public void play(String filename) {
-            URL relPath = MainUI.class.getResource(filename);
-            try {
-                Clip clip = AudioSystem.getClip();
-                clip.open(AudioSystem.getAudioInputStream(relPath));
-                clip.start();
-            } catch (Exception exc) {
-                exc.printStackTrace(System.out);
+        public Element fetchCorrectPrice(Document document) {
+            Element priceElement = document.getElementById("priceblock_dealprice");
+            if (priceElement == null) {
+                priceElement = document.getElementById("priceblock_ourprice");
             }
+            if (priceElement == null) {
+                priceElement = document.getElementById("priceblock_saleprice");
+            }
+            return priceElement;
         }
 
         public void fetchProductData() {
-            if (this.url.isEmpty()) {
-                product.play("/res/error.wav");
+            if (this.productUrl.isEmpty()) {
+                notification.playSound("/res/error.wav");
                 JOptionPane.showMessageDialog(MainUI.this, "Yoou have entered emtpy URL, please enter amazon product url", "Empty URL", HEIGHT);
                 return;
-            } else if (!this.url.contains("amazon.in")) {
+            } else if (!this.productUrl.contains("amazon.in")) {
 
-                product.play("/res/error.wav");
+                notification.playSound("/res/error.wav");
                 JOptionPane.showMessageDialog(MainUI.this, "This is not valid URL", "Invalid URL", HEIGHT);
                 return;
             }
             try {
-                System.out.println("will scrap data for url: " + this.url);
+                System.out.println("will scrap data for url: " + this.productUrl);
                 //---get whole html document
-                Document document = Jsoup.connect(this.url).userAgent("Chrome").get();
+                Document document = Jsoup.connect(this.productUrl).userAgent("Chrome").get();
                 System.out.println(document.outerHtml().substring(1, 50));
 
                 //-----get product price
-                Element priceElement = document.getElementById("priceblock_dealprice");
-                if (priceElement == null) {
-                    priceElement = document.getElementById("priceblock_ourprice");
-                }
-                if (priceElement == null) {
-                    priceElement = document.getElementById("priceblock_saleprice");
-                }
+                Element priceElement = fetchCorrectPrice(document);
 
-//                System.out.println(priceElement);
-//                System.out.println("the end");
                 this.productLatestPrice = priceElement.wholeText();
 
                 //---get product name
@@ -119,8 +106,10 @@ public class MainUI extends javax.swing.JFrame {
 //                return "Sucess";
 
                 if (this.productOldPrice.isEmpty()) {
-                    this.productOldPrice=this.productLatestPrice;
-                } else if (this.productOldPrice != this.productLatestPrice) {
+                    this.productOldPrice = this.productLatestPrice;
+                } else if (!this.productOldPrice.equals(this.productLatestPrice)) {
+                    notification.playSound("/res/tada.wav");
+                    System.out.println("oldprice length:" + this.productOldPrice.getClass() + " latestprice length" + this.productLatestPrice.length());
                     JOptionPane.showMessageDialog(MainUI.this, "Price changed from: " + this.productOldPrice + " to " + this.productLatestPrice, "Price Changed", HEIGHT);
                 }
             } catch (Exception ex) {
@@ -130,6 +119,20 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
 
+    }
+
+    public class Notifications {
+
+        public void playSound(String resUrl) {
+            URL relPath = MainUI.class.getResource(resUrl);
+            try {
+                Clip clip = AudioSystem.getClip();
+                clip.open(AudioSystem.getAudioInputStream(relPath));
+                clip.start();
+            } catch (Exception exc) {
+                exc.printStackTrace(System.out);
+            }
+        }
     }
 
     /**
@@ -199,6 +202,11 @@ public class MainUI extends javax.swing.JFrame {
         jLabel1.setText("on");
 
         btnPriceNotification.setText("Get Notified On Price Change");
+        btnPriceNotification.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                btnPriceNotificationStateChanged(evt);
+            }
+        });
         btnPriceNotification.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPriceNotificationActionPerformed(evt);
@@ -325,6 +333,7 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_menuExitActionPerformed
 
     private void menuExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuExitMouseClicked
+        timer.stop();
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_menuExitMouseClicked
 
@@ -334,9 +343,9 @@ public class MainUI extends javax.swing.JFrame {
 
     private void btnFetchProductDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFetchProductDetailsActionPerformed
         // TODO add your handling code here:
-        product.url = txtBoxAmazonProductUrl.getText();
+        product.productUrl = txtBoxAmazonProductUrl.getText();
 
-        System.out.println("product url is" + product.url);
+        System.out.println("product url is" + product.productUrl);
         product.fetchProductData();
 
         lblFetchedProductName.setText(product.productName);
@@ -345,14 +354,14 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFetchProductDetailsActionPerformed
 
     private void btnPriceNotificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPriceNotificationActionPerformed
-//        Timer timer = new Timer(100, product.fetchProductData());
-//        timer.setInitialDelay(60000 );//60000 means 1 minute//
-//        timer.start();
-//        
-//        int timerDelay = 1000; // 1000 msecs or 1 second
+        if (product.productLatestPrice.isEmpty()) {
+            notification.playSound("/res/error.wav");
+            JOptionPane.showMessageDialog(null, "Please enter the URL first and then click on 'go' button to fetch product data", "No Data", HEIGHT);
+        } else {
+            timer.setInitialDelay(0);//60000 means 1 minute//
+            timer.start();
+        }
 
-        timer.setInitialDelay(0);//60000 means 1 minute//
-        timer.start();
 
     }//GEN-LAST:event_btnPriceNotificationActionPerformed
 
@@ -369,6 +378,10 @@ public class MainUI extends javax.swing.JFrame {
         System.out.println("closing window now");
         timer.stop();// TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnPriceNotificationStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btnPriceNotificationStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPriceNotificationStateChanged
 
     /**
      * @param args the command line arguments
