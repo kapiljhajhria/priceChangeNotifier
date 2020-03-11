@@ -158,8 +158,8 @@ public class MainUI extends javax.swing.JFrame {
         btnPriceNotification = new javax.swing.JButton();
         lblStopScheduledTask = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
-        menuAbout = new javax.swing.JMenu();
-        menuAboutDeveloper = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        aboutMenu = new javax.swing.JMenu();
         menuExit = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -220,17 +220,26 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        menuAbout.setText("About");
-
-        menuAboutDeveloper.setText("developer");
-        menuAboutDeveloper.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuAboutDeveloperActionPerformed(evt);
+        jMenu1.setText("New Window");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
             }
         });
-        menuAbout.add(menuAboutDeveloper);
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
+        menuBar.add(jMenu1);
 
-        menuBar.add(menuAbout);
+        aboutMenu.setText("About");
+        aboutMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                aboutMenuMouseClicked(evt);
+            }
+        });
+        menuBar.add(aboutMenu);
 
         menuExit.setText("Exit");
         menuExit.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -324,10 +333,6 @@ public class MainUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuAboutDeveloperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutDeveloperActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuAboutDeveloperActionPerformed
-
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuExitActionPerformed
@@ -383,6 +388,21 @@ public class MainUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPriceNotificationStateChanged
 
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        // TODO add your handling code here:
+        // delete 
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        new MainUI().setVisible(true); 
+        // delete // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void aboutMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aboutMenuMouseClicked
+    System.out.println("about us");
+    JOptionPane.showMessageDialog(MainUI.this, "Name : Kapil Jhajhria \n Email : jhajhria44@gmail.com", "Developer Details", HEIGHT);
+    }//GEN-LAST:event_aboutMenuMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -420,9 +440,11 @@ public class MainUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu aboutMenu;
     private javax.swing.JButton btnFetchProductDetails;
     private javax.swing.JButton btnPriceNotification;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblAmazonProductUrl;
     private javax.swing.JLabel lblDateTimeOfFetchedPrice;
@@ -432,8 +454,6 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblProductName;
     private javax.swing.JLabel lblProductPrice;
     private javax.swing.JButton lblStopScheduledTask;
-    private javax.swing.JMenu menuAbout;
-    private javax.swing.JMenuItem menuAboutDeveloper;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuExit;
     private javax.swing.JTextField txtBoxAmazonProductUrl;
